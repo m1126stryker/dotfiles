@@ -137,6 +137,12 @@ output * bg /home/m1126stryker/.config/bg fill
     # Toggle Mic
     bindsym --no-repeat XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 #
+# Backlight
+#
+    # Increase/Decrease -No fancy checks as it handles edge cases already-
+    bindsym XF86MonBrightnessUp exec brightnessctl --device=amdgpu_bl1 set +5%
+    bindsym XF86MonBrightnessDown exec brightnessctl --device=amdgpu_bl1 set 5%-
+#
 # Workspaces:
 #
     # Switch to workspace

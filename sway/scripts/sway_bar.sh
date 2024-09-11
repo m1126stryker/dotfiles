@@ -43,7 +43,7 @@ fi
 BLUETOOTHSTATUS=$(bluetoothcli show $(bluetoothcli list | head -n 1 | awk '{print $2}') | awk '/Powered/ {print $2}')
 
 CPUTEMP=$(sensors | awk '/CPU/ {print $2}')
-CPUTEMP=" ${CPUTEMP:(-6):(-4)}C "
+CPUTEMP=" ${CPUTEMP:(-6):(-4)}° "
 
 WEATHER=" $(cat $HOME/.config/sway/scripts/weathernow)° "
 
