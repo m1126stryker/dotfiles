@@ -8,6 +8,7 @@
 #
 exec wl-paste --watch cliphist store
 exec mako
+exec $HOME/.config/sway/scripts/weather.sh
 
 ### Variables
 #

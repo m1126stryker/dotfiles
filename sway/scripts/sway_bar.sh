@@ -17,9 +17,6 @@ VOL=" M "
 PACMUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print$2}')
 if [[ $PACMUTE == "no" ]]; then
 	VOL=" $(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print$5}')";
-	#if [[ "$VOL" == " 100%" ]]; then
-	#	VOL=${VOL:1:4};
-	#fi
 fi
 
 DATETIME="  $(date +'%a %Y-%m-%d %R:%S')"
@@ -29,28 +26,31 @@ PLMAX=30
 if [[ $(playerctl status) != "Stopped" ]]; then
 	PLAYERCTL=$(playerctl metadata --format '{{trunc(default(uc(playerName),NA),10)}} ({{status}}): {{trunc(title,20)}}  {{trunc(artist,15)}}');
 fi
-#PLENGTH=${#PLAYERCTL}
-#YESIMSTUPID="                     "
-#WHITE=${YESIMSTUPID:$( expr $(expr $PLMAX - $PL) / 2 )}
-#PLAYERCTL="$WHITE$PLAYERCTL$WHITE"
 
 NETWORKSTATUS="$(nmcli device status | tail -n +2 | head -n 1 | awk '{print toupper($2)}')"
 NETWORKSTATUS=" ${NETWORKSTATUS:0:4} "
-if [[ $NETWORKSTATUS == "lo" ]]; then
+if [[ $NETWORKSTATUS == " LOOP " ]]; then
 	NETWORKSTATUS=" N:NA "
 fi
 
-BLUETOOTHSTATUS=$(bluetoothcli show $(bluetoothcli list | head -n 1 | awk '{print $2}') | awk '/Powered/ {print $2}')
+BLUETOOTHSTATUS=$(bluetoothctl show $(bluetoothctl list | head -n 1 | awk '{print $2}') | awk '/Powered/ {print $2}')
+if [[ $BLUETOOTHSTATUS == "yes" ]]; then
+	BLUETOOTHSTATUS="󰂯 "
+else
+	BLUETOOTHSTATUS=""
+fi
 
 CPUTEMP=$(sensors | awk '/CPU/ {print $2}')
 CPUTEMP=" ${CPUTEMP:(-6):(-4)}° "
 
-WEATHER=" $(cat $HOME/.config/sway/scripts/weathernow)° "
+WEATHER=" $(cat $HOME/.config/sway/scripts/weathernow) "
 
 # Total Width With 1 Workspace, MesloLGMNerdFont Mono 11 = 210, Each WS indicator elements takes almost 2 chars wide
+#
 # Total length of the whole status
 LENGTH=$(( ${#BAT} + ${#DATETIME} + ${#VOL} + ${#KBLAYOUT} + ${#NETWORKSTATUS} + ${#WEATHER} + ${#CPUTEMP} + ${#PLAYERCTL} ))
 # 210 - (Workspaces indicators width + ALL of the Status's Width)
-WSLEN=$(( 210 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
+WSLEN=$(( 209 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
 SPACES=$(printf '%*s' "$WSLEN")
-echo "$PLAYERCTL$SPACES$CPUTEMP$WEATHER$NETWORKSTATUS$KBLAYOUT$VOL$DATETIME$BAT"
+
+echo "$PLAYERCTL$SPACES$CPUTEMP$WEATHER$NETWORKSTATUS$KBLAYOUT$VOL$DATETIME$BAT$BLUETOOTHSTATUS"
