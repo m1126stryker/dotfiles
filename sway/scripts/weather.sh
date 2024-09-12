@@ -1,6 +1,6 @@
 #! /bin/bash
 
-fnow="$HOME/.config/sway/scripts/weathernow"
+fnow="$HOME/.config/sway/scripts/status_data/weather"
 echo "NA °C" > $fnow
 sleep 5
 while  :
@@ -11,10 +11,10 @@ do
 	if [[ -n $weather ]]; then
 		temp=$(echo $weather | jq '.current.temperature_2m')
 		unit=$(echo $weather | jq '.current_units.temperature_2m')
-		echo "$temp${unit:1:2}"  > $fnow;
+		echo " $temp${unit:1:2} "  > $fnow;
 		sleep $(echo $weather | jq '.current.interval');
 	else
-		echo "NA °C" > $fnow
+		echo " NA °C " > $fnow
 		sleep 60
 	fi
 done

@@ -1,56 +1,26 @@
 #! /bin/bash
 
-# Script for sway-bar status label command
-# Weather shall be updated by its dedicated daemon and script checks only for its updated output
-# All other status fields are updated every second while for weather its up to its daemon
+# Retreiving data from the output of 2 different daemon scripts running in the background to-
+# minimize the time delay resultinf from handling them all on fly
 
-KBLAYOUT=" $(swaymsg -p -t get_inputs | awk -F "AT_Translated_Set_2_keyboard" '/Active Keyboard Layout/ { print $1; exit; }' | awk '{ print toupper(substr($4,1,2)) }') "
-
-BAT=$(acpi --battery | grep -o -P '.{0,3}%' )
-if [[ $(acpi --ac-adapter | awk '{print $3}') == "on-line" ]]; then
-	BAT=" ${BAT} 󱐥 "
-else
-	BAT=" ${BAT}  "
-fi
-
-VOL=" M "
-PACMUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print$2}')
-if [[ $PACMUTE == "no" ]]; then
-	VOL=" $(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print$5}')";
-fi
-
+FILE="$HOME/.config/sway/scripts/status_data/lazy_info"
+KBLAYOUT=$(sed '1q;d' $FILE)
+BAT=$(sed '2q;d' $FILE)
+VOL=$(sed '3q;d' $FILE )
 DATETIME="  $(date +'%a %Y-%m-%d %R:%S')"
+PLAYERCTL=$(sed	'4q;d' $FILE)
+NETWORKSTATUS=$(sed '5q;d' $FILE)
+BLUETOOTHSTATUS=$(sed '6q;d' $FILE)
+CPUTEMP=$(sed '7q;d' $FILE)
+WEATHER=$(sed '8q;d' $FILE)
+SPACES=$(sed '9q;d' $FILE)
 
-PLAYERCTL=""
-PLMAX=30
-if [[ $(playerctl status) != "Stopped" ]]; then
-	PLAYERCTL=$(playerctl metadata --format '{{trunc(default(uc(playerName),NA),10)}} ({{status}}): {{trunc(title,20)}}  {{trunc(artist,15)}}');
-fi
-
-NETWORKSTATUS="$(nmcli device status | tail -n +2 | head -n 1 | awk '{print toupper($2)}')"
-NETWORKSTATUS=" ${NETWORKSTATUS:0:4} "
-if [[ $NETWORKSTATUS == " LOOP " ]]; then
-	NETWORKSTATUS=" N:NA "
-fi
-
-BLUETOOTHSTATUS=$(bluetoothctl show $(bluetoothctl list | head -n 1 | awk '{print $2}') | awk '/Powered/ {print $2}')
-if [[ $BLUETOOTHSTATUS == "yes" ]]; then
-	BLUETOOTHSTATUS="󰂯 "
-else
-	BLUETOOTHSTATUS=""
-fi
-
-CPUTEMP=$(sensors | awk '/CPU/ {print $2}')
-CPUTEMP=" ${CPUTEMP:(-6):(-4)}° "
-
-WEATHER=" $(cat $HOME/.config/sway/scripts/weathernow) "
-
-# Total Width With 1 Workspace, MesloLGMNerdFont Mono 11 = 210, Each WS indicator elements takes almost 2 chars wide
-#
-# Total length of the whole status
-LENGTH=$(( ${#BLUETOOTHSTATUS} + ${#BAT} + ${#DATETIME} + ${#VOL} + ${#KBLAYOUT} + ${#NETWORKSTATUS} + ${#WEATHER} + ${#CPUTEMP} + ${#PLAYERCTL} ))
-# 210 - (Workspaces indicators width + ALL of the Status's Width)
-WSLEN=$(( 209 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
-SPACES=$(printf '%*s' "$WSLEN")
-
-echo "$PLAYERCTL$SPACES$CPUTEMP$WEATHER$NETWORKSTATUS$KBLAYOUT$VOL$DATETIME$BAT$BLUETOOTHSTATUS"
+echo "$PLAYERCTL\
+$SPACES\
+$CPUTEMP\
+$WEATHER\
+$NETWORKSTATUS\
+$KBLAYOUT\
+$VOL\
+$DATETIME$BAT\
+$BLUETOOTHSTATUS"
