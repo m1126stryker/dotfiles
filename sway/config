@@ -8,8 +8,6 @@
 #
 exec wl-paste --watch cliphist store
 exec mako
-exec pkill weather.sh
-exec pkill statusd.sh
 exec $HOME/.config/sway/scripts/weather.sh
 exec $HOME/.config/sway/scripts/statusd.sh
 

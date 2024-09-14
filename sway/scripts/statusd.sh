@@ -5,24 +5,13 @@
 # variables in parallel with time results a +100ms time delay (a funny clock label upadting seconds every 1.2 seconds somehow)
 # Something that made time label largely inaccurate
 # Weather is updated through its dedicated daemon script and this only checks for its regurally updated output
-# All other status fields are updated every second updating the lazy_info file in the following order
-# keyboard layout
-# battery
-# volume
-# playerctl
-# network
-# bluetooth
-# cputemp
-# weather
-# whitespaces
-#
+pkill -O 1 statusd.sh
 FILE="$HOME/.config/sway/scripts/status_data/lazy_info"
 echo > $FILE
 while  :
 do
 	#KEYBOARD
-	KBLAYOUT=" $(swaymsg -p -t get_inputs | awk -F "AT_Translated_Set_2_keyboard" '/Active Keyboard Layout/ { print $1; exit; }' | awk '{ print toupper(substr($4,1,2)) }') "
-
+	KBLAYOUT=" $(swaymsg -t get_inputs | jq -r '.[3]|.xkb_active_layout_name[0:2]|ascii_upcase') "
 	#BATTERY
 	BAT=$(acpi --battery | grep -o -P '.{0,3}%' )
 	if [[ $(acpi --ac-adapter | awk '{print $3}') == "on-line" ]]; then
@@ -30,7 +19,6 @@ do
 	else
 		BAT=" ${BAT}  "
 	fi
-		
 	#VOLUME
 	VOL=" M "
 	PACMUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{print$2}')
@@ -40,19 +28,19 @@ do
 		
 	#PLAYERCTL
 	PLAYERCTL=""
-	if [[ $(playerctl status) != "Stopped" ]]; then
-		PLAYERCTL=$(playerctl metadata --format '{{trunc(default(uc(playerName),NA),10)}} ({{status}}): {{trunc(title,20)}}  {{trunc(artist,15)}}');
+	if [[ $(playerctl status 2> /dev/null) != "Stopped" ]]; then
+		PLAYERCTL=$(playerctl metadata --format '{{trunc(default(uc(playerName),NA),10)}} ({{status}}): {{trunc(title,20)}}  {{trunc(artist,15)}}' 2> /dev/null);
 	fi
 		
 	#NETWORK
-	NETWORKSTATUS="$(nmcli device status | tail -n +2 | head -n 1 | awk '{print toupper($2)}')"
+	NETWORKSTATUS="$(nmcli -f TYPE -t device status | awk '{print toupper($1); exit;}')"
 	NETWORKSTATUS=" ${NETWORKSTATUS:0:4} "
 	if [[ $NETWORKSTATUS == " LOOP " ]]; then
 		NETWORKSTATUS=" N:NA "
 	fi	
 
 	#BLUETOOTH
-	BLUETOOTHSTATUS=$(bluetoothctl show $(bluetoothctl list | head -n 1 | awk '{print $2}') | awk '/Powered/ {print $2}')
+	BLUETOOTHSTATUS=$(bluetoothctl show $(bluetoothctl list | awk '{print $2;exit;}') | awk '/Powered/ {print $2}')
 	if [[ $BLUETOOTHSTATUS == "yes" ]]; then
 		BLUETOOTHSTATUS="󰂯 "
 	else
@@ -60,8 +48,7 @@ do
 	fi
 	
 	#CPUTEMP
-	CPUTEMP=$(sensors | awk '/CPU/ {print $2}')
-	CPUTEMP=" ${CPUTEMP:(-6):(-4)}° "
+	CPUTEMP=" $(sensors -j | jq -r '."thinkpad-isa-0000"."CPU"."temp1_input"|round')° "  
 	
 	#WEATHER
 	WEATHER="$(cat ./.config/sway/scripts/status_data/weather)"
@@ -74,6 +61,6 @@ do
 	WSLEN=$(( 209 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
 	SPACES="$(printf '%*s' "$WSLEN")"
 
-	sleep 1
 	echo -e "$KBLAYOUT\n$BAT\n$VOL\n$PLAYERCTL\n$NETWORKSTATUS\n$BLUETOOTHSTATUS\n$CPUTEMP\n$WEATHER\n$SPACES" > $FILE
+	sleep 1;
 done
