@@ -85,8 +85,11 @@ output * bg /home/m1126stryker/.config/bg fill
     # Start browser
     bindsym --to-code $mod+g exec $wbrowser
 
-    # Execute cmd
-    bindsym --to-code $mod+d exec ~/.config/sway/scripts/cmdexec.sh 
+    # Execute command -wmenu-
+    # Normal:
+    bindsym --to-code $mod+d exec wmenu-run -b
+    # Interactive:
+    bindsym --to-code $mod+Shift+d exec ~/.config/sway/scripts/cmdexec.sh 
     # Playerctl Play/Pause 
     bindsym --to-code $mod+Shift+p exec playerctl play-pause
     # Drag floating windows by holding down $mod and left mouse button.
