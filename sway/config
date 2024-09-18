@@ -149,7 +149,8 @@ output * bg /home/m1126stryker/.config/bg fill
     bindsym XF86MonBrightnessDown exec brightnessctl --device=amdgpu_bl1 set 5%-
 
 # Screenshot
-    bindsym --no-repeat $mod+Print exec grim -t jpeg -q 100 -c && notify-send -t 1500 Screenshot "screenshot saved successfully at $GRIM_DEFAULT_DIR"
+    bindsym --no-repeat $mod+Print exec grim -t jpeg -q 100 -c && notify-send -t 1500 Screenshot "Screenshot saved successfully"
+    bindsym --no-repeat $mod+Shift+Print exec slurp | grim -t jpeg -q 100 -g - && notify-send -t 1500 Screenshot "Screenshot saved successfully"
 #
 # Workspaces:
 #
