@@ -91,7 +91,7 @@ output * bg /home/m1126stryker/.config/bg fill
     # Interactive:
     bindsym --to-code $mod+Shift+d exec ~/.config/sway/scripts/cmdexec.sh 
     # Playerctl Play/Pause 
-    bindsym --to-code $mod+Shift+p exec playerctl play-pause
+    bindsym --to-code $mod+p exec playerctl play-pause
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
@@ -264,6 +264,7 @@ title_align center
 bar {
     position top
     font "MesloLGMNerdFont Mono 11"
+    height 26
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command while $HOME/.config/sway/scripts/sway_bar.sh; do sleep 1; done
