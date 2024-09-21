@@ -55,8 +55,10 @@ do
 
 	# Total Width With 1 Workspace, MesloLGMNerdFont Mono 11 = 210, Each WS indicator element is almost 2 chars wide
 	# DATETIME length is hardcoded as 25 -> DATETIME="  $( date '%a %Y-%m-%d %R:%S' )"
+	# NETWORKSTATUS length is hardcoded as 6 as it takes first 4 chars of the active network adding two spaces at both ends
+	# KBLAYOUT length is hardcoded as 4 for the same reason
 	# Total length of the whole status :
-	LENGTH=$(( ${#BLUETOOTHSTATUS} + ${#BAT} + 25 + ${#VOL} + ${#KBLAYOUT} + ${#NETWORKSTATUS} + ${#WEATHER} + ${#CPUTEMP} + ${#PLAYERCTL} ))
+	LENGTH=$(( ${#BLUETOOTHSTATUS} + ${#BAT} + 25 + ${#VOL} + 4 + 6 + ${#WEATHER} + ${#CPUTEMP} + ${#PLAYERCTL} ))
 	# 210 ( 209 to be better adapted to the slow update interval (1s) ) - (Workspace indicators width + ALL of the Status's Width) :
 	WSLEN=$(( 209 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
 	SPACES="$(printf '%*s' "$WSLEN")"
