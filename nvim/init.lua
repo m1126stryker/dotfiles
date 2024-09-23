@@ -32,6 +32,8 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 vim.opt.scrolloff = 22
 
+vim.opt.termguicolors = true
+
 vim.schedule(function()
 	vim.opt.clipboard = 'unnamedplus'
 end)
@@ -51,11 +53,12 @@ vim.keymap.set({'n','v'}, '<C-l>', '<C-w><C-l>', {desc = 'Move focus to the righ
 vim.keymap.set({'n','v'}, '<C-k>', '<C-w><C-k>', {desc = 'Move focus to the upper window'})
 vim.keymap.set({'n','v'}, '<C-j>', '<C-w><C-j>', {desc = 'Move focus to the lower window'})
 
+vim.keymap.set('n', '<C-c><C-c>', '<cmd>ColorizerToggle<CR>', {desc = 'Toggle Colorizer on the current buffer'})
+
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
 })
 
---require("config.lazy")
---require("lazy").setup("plugins")
+require("config.lazy")
