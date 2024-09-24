@@ -34,6 +34,11 @@ vim.opt.scrolloff = 22
 
 vim.opt.termguicolors = true
 
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
 vim.schedule(function()
 	vim.opt.clipboard = 'unnamedplus'
 end)
@@ -54,6 +59,10 @@ vim.keymap.set({'n','v'}, '<leader>k', '<C-w><C-k>', {desc = 'Move focus to the 
 vim.keymap.set({'n','v'}, '<leader>j', '<C-w><C-j>', {desc = 'Move focus to the lower window'})
 
 vim.keymap.set('n', '<C-c><C-c>', '<cmd>ColorizerToggle<CR>', {desc = 'Toggle Colorizer on the current buffer'})
+
+vim.keymap.set('x', '<leader>p', '\"_dP') --paste while preserving the yanked text
+vim.keymap.set({'n','v'}, '<leader>y', '\"+y') --yank to system clipboard
+vim.keymap.set('n', '<leader>Y', '\"+Y')
 
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
