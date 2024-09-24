@@ -6,7 +6,7 @@
 
 # Import additional configuration files
 import = [
-  "~/.config/alacritty/themes/tokyonight_night.toml" 
+  "~/.config/alacritty/themes/catppuccin-mocha.toml" 
 ]
 
 # Shell program and its arguments
@@ -54,7 +54,7 @@ dynamic_padding = false  # Default: false
 decorations = "Buttonless"  # Default: "Full"
 
 # Opacity
-opacity = 0.93  # Default: 1.0
+opacity = 0.96  # Default: 1.0
 
 # Startup mode
 startup_mode = "Windowed"  # Default: "Windowed"

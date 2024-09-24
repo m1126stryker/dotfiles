@@ -1,6 +1,16 @@
 return {
     'tpope/vim-sleuth',
-
+    {'romgrk/barbar.nvim',
+      dependencies = {
+        'lewis6991/gitsigns.nvim',
+        'nvim-tree/nvim-web-devicons',
+      },
+      init = function() vim.g.barbar_auto_setup = false end,
+      opts = {
+        animation = true,
+      },
+      version = '^1.0.0',
+    },
     { 'lewis6991/gitsigns.nvim',
         opts = {
             signs = {
@@ -12,7 +22,12 @@ return {
             },
         },
     },
-
+    { 'nvim-lualine/lualine.nvim',
+      dependencies = { 'nvim-tree/nvim-web-devicons' },
+      opts = {
+        options = { theme = "catppuccin" },
+      },
+    },
     { 'folke/which-key.nvim',
         event = 'VimEnter',
         opts = {

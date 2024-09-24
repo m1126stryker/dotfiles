@@ -11,6 +11,10 @@ exec mako
 exec $HOME/.config/sway/scripts/weather.sh
 exec $HOME/.config/sway/scripts/statusd.sh
 
+### Include your preferred Color Palette
+#
+include palette/catppuccin-mocha
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -44,10 +48,10 @@ output * bg /home/m1126stryker/.config/bg fill
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+ exec swayidle -w \
+          timeout 300 'swaylock' \
+          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+          before-sleep 'swaylock'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -152,7 +156,7 @@ output * bg /home/m1126stryker/.config/bg fill
     bindsym --no-repeat $mod+Print exec grim -t jpeg -q 100 -c && notify-send -t 1500 Screenshot "Screenshot saved successfully"
     bindsym --no-repeat $mod+Shift+Print exec slurp | grim -t jpeg -q 100 -g - && notify-send -t 1500 Screenshot "Screenshot saved successfully"
 # Lock
-    bindsym --no-repeat XF86Tools exec swaylock -e -i ~/.config/bg
+    bindsym --no-repeat XF86Tools exec swaylock
 #
 # Workspaces:
 #
@@ -259,10 +263,19 @@ gaps inner 5
 font "NotoSans Regular 11"
 
 #
+# Colors
+#
+# target                 title     bg      text      indicator  border
+client.focused           $crust    $crust  $lavender $rosewater $base
+client.focused_inactive  $mantle   $mantle $subtext1 $rosewater $mantle
+client.unfocused         $base     $base   $subtext0 $rosewater $mantle
+client.urgent            $peach    $base   $peach    $overlay0  $peach
+client.background        $base
+
+#
 # Window Titles:
 #
 title_align center
-
 
 #
 # Status Bar:
@@ -270,15 +283,22 @@ title_align center
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
-    font "MesloLGMNerdFont Mono 11"
+    font "MesloLGMNerdFont Mono Bold 11"
     height 26
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command while $HOME/.config/sway/scripts/sway_bar.sh; do sleep 1; done
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+        background         $base
+        statusline         $text
+        focused_statusline $lavender
+        focused_separator  $base
+
+        # target           border bg        text
+        focused_workspace  $base  $mauve    $crust
+        active_workspace   $base  $surface2 $text
+        inactive_workspace $base  $crust    $text
+        urgent_workspace   $base  $red      $crust
     }
 }
 

@@ -1,5 +1,4 @@
 return {
--- AUTOCOMPLETION PLUGINS
   {'norcalli/nvim-colorizer.lua',
     lazy = false,
     init = function()
@@ -9,4 +8,6 @@ return {
         { mode = 'foreground'; })
     end
   },
+  -- TREESITTER PLUGIN
+  -- AUTOCOMPLETION PLUGINS
 }
