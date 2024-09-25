@@ -31,8 +31,10 @@ set $wbrowser google-chrome-stable
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
+set $wmenu-theme -N 181825 -n b4befe -M 1e1e2e -m bac2de -S cba6f7 -s 181825 
 #set $menu wmenu-run -b | xargs swaymsg exec --
-set $menu wmenu -b
+set $menu wmenu $wmenu-theme -b
+
 
 ### Output configuration
 #
@@ -91,7 +93,7 @@ output * bg /home/m1126stryker/.config/bg fill
 
     # Execute command -wmenu-
     # Normal:
-    bindsym --to-code $mod+d exec wmenu-run -b | wl-copy
+    bindsym --to-code $mod+d exec wmenu-run $wmenu-theme -b | wl-copy
     # Interactive:
     bindsym --to-code $mod+Shift+d exec ~/.config/sway/scripts/cmdexec.sh 
     # Playerctl Play/Pause 
