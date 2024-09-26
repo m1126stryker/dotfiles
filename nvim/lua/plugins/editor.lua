@@ -12,15 +12,40 @@ return {
       version = '^1.0.0',
     },
     { 'lewis6991/gitsigns.nvim',
-        opts = {
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '_' },
-                topdelete = { text = '‾' },
-                changedelete = { text = '~' },
-            },
-        },
+      dependencies = { 'nvim-telescope/telescope.nvim' },
+      config = function()
+        local gitsigns = require("gitsigns")
+        local telescope_bi = require("telescope.builtin")
+        gitsigns.setup {
+          signs = {
+            add          = { text = '┃' },
+            change       = { text = '┃' },
+            delete       = { text = '_' },
+            topdelete    = { text = '‾' },
+            changedelete = { text = '~' },
+            untracked    = { text = '┆' },
+          },
+          signs_staged = {
+            add          = { text = '┃' },
+            change       = { text = '┃' },
+            delete       = { text = '_' },
+            topdelete    = { text = '‾' },
+            changedelete = { text = '~' },
+            untracked    = { text = '┆' },
+          },
+          signs_staged_enable = true,
+          on_attach = function(buffnr)
+            -- GIT KYEBINDS --
+            vim.keymap.set('n', '<leader>gitstt', telescope_bi.git_status, { desc = '[GIT] [ST]a[T]us' })
+            vim.keymap.set('n', '<leader>gitc', telescope_bi.git_commits, { desc = '[GIT] [C]ommits' })
+            vim.keymap.set('n', '<leader>gitbc', telescope_bi.git_bcommits, { desc = '[GIT] [B]uffer [C]ommits' })
+            vim.keymap.set('n', '<leader>gitph', gitsigns.preview_hunk, { desc = '[GIT] [P]review [H]unk' })
+            vim.keymap.set('n', '<leader>githstage', gitsigns.stage_hunk, { desc = '[GIT] [H]unk [STAGE]' })
+            vim.keymap.set('n', '<leader>gitbstage', gitsigns.stage_buffer, { desc = '[GIT] [B]uffer [STAGE]' })
+            vim.keymap.set('n', '<leader>gitustage', gitsigns.undo_stage_hunk, { desc = '[GIT] [U]ndo [STAGE]' })
+          end,
+        }
+      end,
     },
     { 'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -82,17 +107,15 @@ return {
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      -- TELESCOPE KEYBINDS --
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set('n', '<leader>sb', builtin.current_buffer_fuzzy_find, { desc = '[S]earch current [B]uffer' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
