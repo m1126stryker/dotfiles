@@ -40,7 +40,7 @@ return {
             vim.keymap.set('n', '<leader>gitc', telescope_bi.git_commits, { desc = '[GIT] [C]ommits' })
             vim.keymap.set('n', '<leader>gitbc', telescope_bi.git_bcommits, { desc = '[GIT] [B]uffer [C]ommits' })
             vim.keymap.set('n', '<leader>gitph', gitsigns.preview_hunk, { desc = '[GIT] [P]review [H]unk' })
-            vim.keymap.set('n', '<leader>githstage', gitsigns.stage_hunk, { desc = '[GIT] [H]unk [STAGE]' })
+            vim.keymap.set('n', '<leader>githstage', function() gitsigns.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = '[GIT] [H]unk [STAGE]' })
             vim.keymap.set('n', '<leader>gitbstage', gitsigns.stage_buffer, { desc = '[GIT] [B]uffer [STAGE]' })
             vim.keymap.set('n', '<leader>gitustage', gitsigns.undo_stage_hunk, { desc = '[GIT] [U]ndo [STAGE]' })
           end,
