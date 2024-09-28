@@ -8,6 +8,10 @@ return {
         { mode = 'foreground'; })
     end
   },
+  { "L3MON4D3/LuaSnip",
+    version = "v2.*",
+    build = "make install_jsregexp"
+  },
   { 'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs',
@@ -39,7 +43,6 @@ return {
           -- Automatically jump forward to textobj, similar to targets.vim
           lookahead = true,
           keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
             ['af'] = { query = '@function.outer', desc = 'Select [A]round a [F]unction' },
             ['if'] = { query = '@function.inner', desc = 'Select [I]nner part of a [F]unction' },
             ['al'] = { query = '@loop.outer', desc = 'Select [A]round a [L]oop' },
@@ -57,14 +60,41 @@ return {
         },
       },
     },
-    --enable folding [disabled for now]
-    --init = function()
-    --  vim.wo.foldmethod = 'expr'
-    --  vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-    --end,
   },
   { 'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
-  -- AUTOCOMPLETION PLUGINS
+  { 'hrsh7th/nvim-cmp',
+    dependencies = {
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+    },
+    config = function()
+      vim.opt.completeopt = {"menu", "menuone", "noinsert"}
+      local cmp = require('cmp')
+      snippet = {
+        expand = function(args)
+          require('luasnip').lsp_expand(args.body)
+        end,
+      }
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      }
+      mapping = cmp.mapping.preset.insert({
+        ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-j>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      })
+      sources = cmp.config.sources{
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+      } , { { name = 'buffer' }, }
+    end,
+  },
 }

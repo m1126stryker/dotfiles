@@ -3,16 +3,17 @@ return {
   { 
     { 'neovim/nvim-lspconfig',
       dependencies = { 
-        {'j-hui/fidget.nvim',
+        { 'hrsh7th/nvim-cmp',
+          'j-hui/fidget.nvim',
           opts = {
             progress = { display = { render_limit = 7, }, },
           },
         },
-        'hrsh7th/cmp-nvim-lsp',
       },
       config = function()
         local lspconfig = require('lspconfig')
         local telescope_bi = require('telescope.builtin')
+        capabilities = require('cmp_nvim_lsp').default_capabilities()
 
         -- Global LSP keybinds
         local function lsp_global_keybinds(event)
@@ -28,15 +29,13 @@ return {
           vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = '[D]iagnostics [K](Up)Previous', buffer=event.buf })
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc ='[C]ode [A]ctions', buffer=event.buf })
         end
-        --local client_capabilities = vim.lsp.protocol.make_client_capabilities()
-        --client_capabilities = vim.tbl_deep_extend('force', client_capabilities, require('cmp_nvim_lsp').default_capabilities())
 
         lspconfig.clangd.setup{
           vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-on-attach', {clear = true}),
             callback = lsp_global_keybinds,
           }),
-          --capabilities = client_capabilites,
+          capabilities = capabilites,
         }
 
         vim.api.nvim_create_autocmd('LspDetach', {
