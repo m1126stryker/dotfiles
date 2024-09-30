@@ -3,14 +3,15 @@ return {
   { 
     { 'neovim/nvim-lspconfig',
       dependencies = { 
-        { 'hrsh7th/nvim-cmp',
+        { { 'hrsh7th/nvim-cmp', lazy = false },
+          { 'hrsh7th/cmp-nvim-lsp', lazy = false },
           'j-hui/fidget.nvim',
           opts = {
             progress = { display = { render_limit = 7, }, },
           },
         },
       },
-      config = function()
+      init = function()
         local lspconfig = require('lspconfig')
         local telescope_bi = require('telescope.builtin')
         capabilities = require('cmp_nvim_lsp').default_capabilities()
