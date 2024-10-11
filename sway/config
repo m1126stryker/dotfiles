@@ -64,7 +64,7 @@ output * bg /home/m1126stryker/.config/bg fill
 # Example configuration:
 #
    input "2:7:SynPS/2_Synaptics_TouchPad" {
-       dwt enabled
+       dwt disabled
        tap enabled
        natural_scroll enabled
        middle_emulation enabled
@@ -98,6 +98,7 @@ output * bg /home/m1126stryker/.config/bg fill
     bindsym --to-code $mod+Shift+d exec ~/.config/sway/scripts/cmdexec.sh 
     # Playerctl Play/Pause 
     bindsym --to-code $mod+p exec playerctl play-pause
+    bindsym --to-code $mod+Shift+p exec playerctl play-pause -a
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.

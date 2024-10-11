@@ -11,7 +11,7 @@ return {
           },
         },
       },
-      init = function()
+      config = function()
         local lspconfig = require('lspconfig')
         local telescope_bi = require('telescope.builtin')
         capabilities = require('cmp_nvim_lsp').default_capabilities()

@@ -71,11 +71,6 @@ return {
       { 'hrsh7th/cmp-buffer', lazy = false },
       { 'hrsh7th/cmp-path', lazy = false },
     },
-    opts = { sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'path' }, }
-    },
     config = function()
       vim.opt.completeopt = {"menu", "menuone", "noinsert"}
       local cmp = require('cmp')
@@ -95,11 +90,11 @@ return {
         ['<C-e>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
       })
-      --sources = cmp.config.sources{
-      --  { name = 'nvim_lsp' },
-      --  { name = 'luasnip' },
-      --  { name = 'path' },
-      --} , { { name = 'buffer' }, }
+      sources = cmp.config.sources{
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+        { name = 'path' },
+      } , { { name = 'buffer' }, }
     end,
   },
 }
