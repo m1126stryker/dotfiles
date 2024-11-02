@@ -1,0 +1,14 @@
+logins:
+- name: m1126stryker
+  url: https://codeberg.org
+  token: b3e6fdf71ebb271497736f74a886d09b437346ef
+  default: true
+  ssh_host: codeberg.org
+  ssh_key: ""
+  insecure: true
+  user: m1126stryker
+  created: 1730125306
+preferences:
+  editor: false
+  flag_defaults:
+    remote: ""
