@@ -48,7 +48,7 @@ do
 	fi
 	
 	#CPUTEMP
-	CPUTEMP=" $(sensors -j | jq -r '."thinkpad-isa-0000"."CPU"."temp1_input"|round')° "  
+	CPUTEMP=" $(sensors -j 2> /dev/null | jq -r '."thinkpad-isa-0000"."CPU"."temp1_input"|round')° "  
 	
 	#WEATHER
 	WEATHER="$(cat ./.config/sway/scripts/status_data/weather)"
@@ -60,7 +60,7 @@ do
 	# Total length of the whole status :
 	LENGTH=$(( ${#BLUETOOTHSTATUS} + ${#BAT} + 25 + ${#VOL} + 4 + 6 + ${#WEATHER} + ${#CPUTEMP} + ${#PLAYERCTL} ))
 	# 210 ( 209 to be better adapted to the slow update interval (1s) ) - (Workspace indicators width + ALL of the Status's Width) :
-	WSLEN=$(( 209 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
+	WSLEN=$(( 210 - $(swaymsg -p -t get_workspaces | grep -c Workspace) * 2 - $LENGTH ))
 	SPACES="$(printf '%*s' "$WSLEN")"
 
 	echo -e "$KBLAYOUT\n$BAT\n$VOL\n$PLAYERCTL\n$NETWORKSTATUS\n$BLUETOOTHSTATUS\n$CPUTEMP\n$WEATHER\n$SPACES" > $FILE
