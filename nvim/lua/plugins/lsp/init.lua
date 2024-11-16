@@ -15,7 +15,9 @@ return {
         local lspconfig = require('lspconfig')
         local telescope_bi = require('telescope.builtin')
         capabilities = require('cmp_nvim_lsp').default_capabilities()
-
+        --[[require('cmp').setup {
+          sources
+        }]]--
         -- Global LSP keybinds
         local function lsp_global_keybinds(event)
           vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, { desc = 'Display Short decribtion for the symbol under cursor', buffer=event.buf })

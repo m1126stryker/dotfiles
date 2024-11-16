@@ -68,33 +68,44 @@ return {
     dependencies = {
       { 'L3MON4D3/LuaSnip', lazy = false },
       { 'saadparwaiz1/cmp_luasnip', lazy = false },
-      { 'hrsh7th/cmp-buffer', lazy = false },
-      { 'hrsh7th/cmp-path', lazy = false },
     },
     config = function()
       vim.opt.completeopt = {"menu", "menuone", "noinsert"}
-      local cmp = require('cmp')
-      snippet = {
-        expand = function(args)
-          require('luasnip').lsp_expand(args.body)
-        end,
-      }
-      window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
-      }
-      mapping = cmp.mapping.preset.insert({
-        ['<C-k>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-j>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      })
-      sources = cmp.config.sources{
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'path' },
-      } , { { name = 'buffer' }, }
     end,
+  },
+  { 'hrsh7th/cmp-buffer', 
+    dependencies = {
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-path',
+      'L3MON4D3/LuaSnip',
+      'neovim/nvim-lspconfig',
+    },
+    config = function()
+      local cmp = require('cmp')
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+          end,
+        },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-k>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-j>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'path' },
+          { name = 'buffer' }
+        } 
+      })
+    end
   },
 }

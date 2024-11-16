@@ -10,11 +10,10 @@ exec wl-paste --watch cliphist store
 exec mako
 exec $HOME/.config/sway/scripts/weather.sh
 exec $HOME/.config/sway/scripts/statusd.sh
-
+include /etc/sway/config.d/*
 ### Include your preferred Color Palette
 #
 include palette/catppuccin-mocha
-
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -305,4 +304,3 @@ bar {
     }
 }
 
-include /etc/sway/config.d/*
