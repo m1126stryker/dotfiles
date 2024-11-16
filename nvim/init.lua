@@ -39,6 +39,8 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.opt.ph = 10
+
 vim.schedule(function()
 	vim.opt.clipboard = 'unnamedplus'
 end)

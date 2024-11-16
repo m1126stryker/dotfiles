@@ -93,17 +93,17 @@ return {
           documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-          ['<C-k>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-j>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-j>'] = cmp.mapping.select_next_item(),
+          ['<C-k>'] = cmp.mapping.select_prev_item(),
+          ['<C-s>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          ['<CR>'] = cmp.mapping.confirm({ select = true })
         }),
         sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'path' },
-          { name = 'buffer' }
+          { name = 'nvim_lsp' , priority = 2 },
+          { name = 'luasnip' , priority = 1 },
+          { name = 'path' , priority = 3 },
+          { name = 'buffer', priority = 4 }
         } 
       })
     end

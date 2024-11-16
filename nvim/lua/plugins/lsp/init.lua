@@ -40,7 +40,6 @@ return {
           }),
           capabilities = capabilites,
         }
-
         vim.api.nvim_create_autocmd('LspDetach', {
           callback = function()
             vim.lsp.buf.clear_references()
