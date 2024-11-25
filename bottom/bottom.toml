@@ -53,7 +53,7 @@ use_old_network_legend = true
 # Show the battery widgets
 battery = true
 # Disable mouse clicks
-#disable_click = false
+disable_click = true
 # Show memory values in the processes widget as values by default
 process_memory_as_value = true
 # Show tree mode by default in the processes widget.
