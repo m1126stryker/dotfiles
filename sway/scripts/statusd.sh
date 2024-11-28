@@ -11,7 +11,7 @@ echo > $FILE
 while  :
 do
 	#KEYBOARD
-	KBLAYOUT=" $(swaymsg -t get_inputs | jq -r '.[3]|.xkb_active_layout_name[0:2]|ascii_upcase') "
+	KBLAYOUT=" $(swaymsg -t get_inputs | jq -r '.[] | select(.identifier =="1:1:AT_Translated_Set_2_keyboard") |.xkb_active_layout_name[0:2]|ascii_upcase') "
 	#BATTERY
 	BAT=$(acpi --battery | grep -o -P '.{0,3}%' )
 	if [[ $(acpi --ac-adapter | awk '{print $3}') == "on-line" ]]; then
