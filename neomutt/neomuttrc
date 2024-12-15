@@ -1,7 +1,57 @@
+## Basic configuration
+set imap_check_subscribed
+set imap_user   = `git config get --global user.email`
+set imap_pass   = `echo \$MUTTPASS_ARI`
+set folder      = "imaps://"`echo $imap_user | awk -F'@' '{print $1}'`"@imap.gmail.com/"
+set spoolfile   = +INBOX
+mailboxes       = +INBOX
 
-# Basic configuration
-set imap_user=`git config get user.email`
+# Store message headers locally to speed things up.
+# If hcache is a folder, Mutt will create sub cache folders for each account which may speeds things up even more.
+set header_cache = ~/.cache/mutt
 
+# Store messages locally to speed things up, like searching message bodies.
+# Can be the same folder as header_cache.
+# This will cost important disk usage according to your e-mail amount.
+set message_cachedir = "~/.cache/mutt"
+
+# Specify where to save and/or look for postponed messages.
+set postponed = +[Gmail]/Drafts
+
+# Allow Mutt to open a new IMAP connection automatically.
+unset imap_passive
+
+# Keep the IMAP connection alive by polling intermittently (time in seconds).
+set imap_keepalive = 300
+
+# How often to check for new mail (time in seconds).
+set mail_check = 120
+
+# smtp setup
+set realname = "`git config get --global user.name`"
+set from = $imap_user
+
+set smtp_pass = $imap_pass
+set ssl_force_tls = yes
+
+set smtp_url=smtp://$imap_user@smtp.gmail.com:587
+set ssl_starttls = yes
+
+## NNTP news server for the kernel mailing lists
+set newsrc = '~/.config/neomutt/newsrc'
+set news_cache_dir = '~/.cache/mutt/news'
+set news_server = 'nntp://nntp.lore.kernel.org'
+set nntp_listgroup = yes
+set nntp_load_description = yes
+
+# Clear cache
+source "~/.config/neomutt/purgecache.sh '$message_cachedir'|"
+source "~/.config/neomutt/purgecache.sh '$news_cache_dir'|"
+
+# Sort by the last recieved
+set sort_aux=reverse-date-received
+set sort=threads
+set sort_re
 
 ## Colorscheme
 color normal	    default default         # Text is "Text"
