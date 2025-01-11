@@ -88,12 +88,14 @@ return {
     config = function()
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
-        -- defaults = {
+        defaults = {
+             initial_mode = "normal",
         --   mappings = {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
-        -- },
+        },
         -- pickers = {}
+
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),

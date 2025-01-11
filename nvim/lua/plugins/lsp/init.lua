@@ -1,6 +1,6 @@
 return {
   -- LSP plugins && setup here
-  { 
+  { "https://git.sr.ht/~p00f/clangd_extensions.nvim",
     { 'neovim/nvim-lspconfig',
       dependencies = { 
         { { 'hrsh7th/nvim-cmp', lazy = false },
@@ -32,8 +32,18 @@ return {
           vim.keymap.set('n', '<leader>dk', vim.diagnostic.goto_prev, { desc = '[D]iagnostics [K](Up)Previous', buffer=event.buf })
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc ='[C]ode [A]ctions', buffer=event.buf })
         end
-
+        
         lspconfig.clangd.setup{
+          init_options = {
+            fallbackFlags = {'--std=gnu99'}
+          },
+          require("clangd_extensions").setup  { 
+            server = { 
+              cmd = { "clangd",
+                "--query-driver='/usr/bin/gcc -std=gnu99'", 
+              }, 
+              on_attach = on_attach },
+          },
           vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-on-attach', {clear = true}),
             callback = lsp_global_keybinds,

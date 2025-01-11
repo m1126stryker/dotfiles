@@ -50,9 +50,9 @@ output * bg /home/m1126stryker/.config/bg fill
 # Example configuration:
 #
  exec swayidle -w \
-          timeout 300 'swaylock' \
+          timeout 300 'if  [[ $(pgrep swaylock) == "" ]]; then swaylock; fi' \
           timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-          before-sleep 'swaylock'
+          before-sleep 'if  [[ $(pgrep swaylock) == "" ]]; then swaylock; fi'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
