@@ -1,6 +1,6 @@
 #! /bin/bash
 pkill -O 1 weather.sh
-fnow="$HOME/.config/sway/scripts/status_data/weather"
+fnow="/tmp/swayweather"
 echo "NA °C" > $fnow
 sleep 5
 while  :

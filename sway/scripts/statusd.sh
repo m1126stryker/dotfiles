@@ -6,7 +6,8 @@
 # Something that made time label largely inaccurate
 # Weather is updated through its dedicated daemon script and this only checks for its regurally updated output
 pkill -O 1 statusd.sh
-FILE="$HOME/.config/sway/scripts/status_data/lazy_info"
+WEATHER_DAT="/tmp/swayweather"
+FILE="/tmp/swaylazy_info"
 echo > $FILE
 while  :
 do
@@ -51,7 +52,7 @@ do
 	CPUTEMP=" $(sensors -j 2> /dev/null | jq -r '."thinkpad-isa-0000"."CPU"."temp1_input"|round')° "  
 	
 	#WEATHER
-	WEATHER="$(cat ./.config/sway/scripts/status_data/weather)"
+	WEATHER="$(cat $WEATHER_DAT)"
 
 	# Total Width With 1 Workspace, MesloLGMNerdFont Mono 11 = 210, Each WS indicator element is almost 2 chars wide
 	# DATETIME length is hardcoded as 25 -> DATETIME="  $( date '%a %Y-%m-%d %R:%S' )"

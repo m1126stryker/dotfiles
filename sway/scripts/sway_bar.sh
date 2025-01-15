@@ -3,7 +3,7 @@
 # Retreiving data from the output of 2 different daemon scripts running in the background to-
 # minimize the time delay resultinf from handling them all on fly
 
-readarray -t STATUS < <(cat $HOME/.config/sway/scripts/status_data/lazy_info)
+readarray -t STATUS < <(cat /tmp/swaylazy_info)
 KBLAYOUT=${STATUS[0]}
 BAT=${STATUS[1]}
 VOL=${STATUS[2]}
