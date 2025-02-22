@@ -33,14 +33,11 @@ return {
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc ='[C]ode [A]ctions', buffer=event.buf })
         end
         
-        lspconfig.clangd.setup{
-          init_options = {
-            fallbackFlags = {'--std=gnu99'}
-          },
-          require("clangd_extensions").setup  { 
+        --[[lspconfig.clangd.setup{
+         require("clangd_extensions").setup  { 
             server = { 
               cmd = { "clangd",
-                "--query-driver='/usr/bin/gcc -std=gnu99'", 
+                "--query-driver='/usr/bin/gcc'", 
               }, 
               on_attach = on_attach },
           },
@@ -49,6 +46,31 @@ return {
             callback = lsp_global_keybinds,
           }),
           capabilities = capabilites,
+        }]]--
+        lspconfig.ccls.setup{
+          settings = {
+            rootMarkers = {".ccls",".git/"},
+            languages = {
+              lua = {
+                {formatCommand = "lua-format -i", formatStdin = true}
+              }
+            }
+          },
+          init_options = {
+            documentFormatting = true;
+            compilationDatabaseDirectory = "build";
+            index = {
+              threads = 0;
+            };
+            clang = {
+              excludeArgs = { "-frounding-math"} ;
+            };
+          },
+          vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('lsp-on-attach', {clear = true}),
+            callback = lsp_global_keybinds,
+          }),
+          capabilities = capabilites
         }
         vim.api.nvim_create_autocmd('LspDetach', {
           callback = function()

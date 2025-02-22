@@ -8,6 +8,7 @@
 #
 exec wl-paste --watch cliphist store
 exec mako
+exec udiskie 
 exec $HOME/.config/sway/scripts/weather.sh
 exec $HOME/.config/sway/scripts/statusd.sh
 include /etc/sway/config.d/*
@@ -212,6 +213,8 @@ output * bg /home/m1126stryker/.config/bg fill
     bindsym --to-code $mod+Shift+a focus child 
 
     # Window Rules
+    for_window [app_id="org.pwmt.zathura"] inhibit_idle focus
+    for_window [app_id="google-chrome" title=".pdf"] inhibit_idle focus
     for_window [title="COMMANDEXEC"] floating enable, resize set 500px 100px
     for_window [app_id="google-chrome" title="(Open File|Save File|Location|[Ss]elect*|[Cc]hoose*)"] floating enable, resize set 700px 500px
     for_window [app_id="google-chrome" title="DevTools -*"] floating enable, resize set 700px 700px

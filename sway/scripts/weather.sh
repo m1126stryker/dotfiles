@@ -1,7 +1,7 @@
 #! /bin/bash
 pkill -O 1 weather.sh
 fnow="/tmp/swayweather"
-echo "NA °C" > $fnow
+echo " NA °C " > $fnow
 sleep 5
 while  :
 do
